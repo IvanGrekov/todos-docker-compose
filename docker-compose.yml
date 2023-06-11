@@ -1,0 +1,29 @@
+version: '3'
+services:
+    db: 
+        image: postgres
+        restart: always
+        volumes:
+            - db_data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_DB: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: Cosonic56
+
+    api:
+        build: ./api
+        ports:
+            - "4001:4001"
+        depends_on:
+            - db
+        environment:
+            DB_HOST: db
+
+    web:
+        build: ./web-app
+        ports:
+            - "80:3000"
+        depends_on:
+            - api
+volumes:
+    db_data:
